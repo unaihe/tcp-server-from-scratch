@@ -1,0 +1,45 @@
+1. Los "Modos" (El concepto clave)
+
+Nada más abrirlo, no puedes escribir. Estás en Modo Normal.
+
+    Para escribir: Pulsa i (Insert Mode). Ahora funciona como un bloc de notas normal.
+
+Para guardar/salir/copiar: Pulsa Esc para volver al Modo Normal.
+
+2. Copiar y Pegar 
+
+En Vim se llama "Yank" (Copiar) y "Put" (Pegar).
+
+    Copiar:
+
+        Pulsa Esc (Modo Normal).
+
+    Pulsa v (Modo Visual). Muevete con las flechas para seleccionar texto (se iluminará).
+
+    Pulsa y (Yank). Ya está copiado en la memoria de Vim.
+
+Pegar:
+
+    Ve a donde quieras pegar.
+
+    Pulsa Esc.
+
+        Pulsa p (Put).
+
+    Borrar una línea entera: Pulsa dd (en Modo Normal).
+
+    Deshacer (Ctrl+Z): Pulsa u (en Modo Normal).
+
+3. Guardar y Salir (La pregunta del millón)
+
+Todo el mundo se queda atrapado en Vim la primera vez.
+
+    Pulsa Esc (para asegurarte de que estás en modo normal).
+
+    Escribe :w y dale a Enter (Write / Guardar).
+
+    Escribe :q y dale a Enter (Quit / Salir).
+
+    Combo breaker: :wq (Guardar y Salir).
+
+    Pánico (salir sin guardar): :q!
