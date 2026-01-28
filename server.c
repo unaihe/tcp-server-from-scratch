@@ -109,21 +109,45 @@ int main(void)
             perror("accept");
             continue;
         }
+        if (!fork()) { 
+            // --- HIJO ---
+            close(sockfd); 
+            
+            char *bienvenida = "Bienvenido al servidor de Unai!\n";
+            send(new_fd, bienvenida, strlen(bienvenida), 0);
+            
+            char buffer[1024];
+            int numbytes;
 
-        inet_ntop(their_addr.ss_family,
-            get_in_addr((struct sockaddr *)&their_addr),
-            s, sizeof s);
-        printf("server: conexion desde %s\n", s);
+            // Este bucle mantiene la charla viva con ESTE cliente.
+            while(1) { 
+                // Esperar mensaje
+                numbytes = recv(new_fd, buffer, sizeof(buffer)-1, 0);
+                // Si error o desconexión
+                if (numbytes <= 0) {
+                    if (numbytes == 0) printf("Server: Cliente desconectado.\n");
+                    else perror("recv");
+                    break; // Romper Bucle 2
+                }
+                buffer[numbytes] = '\0';
+                buffer[strcspn(buffer, "\n")] = '\0';
+                if (strncmp(buffer,"hola",4)==0){
+                	char *msg= "hola\n";
+                	send(new_fd, msg, 5, 0);
+                }
+                else if (strcmp(buffer, "admin") == 0) {
+                	char *secret = "Servidor: *** MODO ADMIN ACTIVADO ***\nClave del sistema: 12345\n";
+                	send(new_fd, secret, strlen(secret), 0);
+            	}
+            }
 
-        if (!fork()) { // Este es el proceso HIJO
-            close(sockfd); // El hijo no necesita escuchar más
-            if (send(new_fd, "Hola mundo!", 13, 0) == -1)
-                perror("send");
-            close(new_fd);
-            exit(0);
+            close(new_fd); // Cierro mi canal privado
+            exit(0);       // El hijo muere aquí
         }
-        close(new_fd);  // El padre vuelve a escuchar
-    }
+        
+        // --- SOY EL PADRE ---
+        close(new_fd); // Cierro mi copia del canal privado y vuelvo arriba
+    } 
 
     return 0;
 }
