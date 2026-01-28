@@ -139,6 +139,17 @@ int main(void)
                 	char *secret = "Servidor: *** MODO ADMIN ACTIVADO ***\nClave del sistema: 12345\n";
                 	send(new_fd, secret, strlen(secret), 0);
             	}
+            	else if (strncmp(buffer, "notas ", 6) == 0) {
+		        char nota_guardada[20];
+		        char *texto_nota = buffer + 6; 
+			
+		        printf("DEBUG: Intentando guardar '%s' en un espacio de 20 bytes...\n", texto_nota);
+			//Al no comprobar nada se podrá copiar hasta el infinito
+		        strcpy(nota_guardada, texto_nota);
+
+		        char *msg = "Nota guardada (espero...)\n";
+		        send(new_fd, msg, strlen(msg), 0);
+            	}
             }
 
             close(new_fd); // Cierro mi canal privado
